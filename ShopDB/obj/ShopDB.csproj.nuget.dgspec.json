@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\Desktop\\P237\\ShopDB\\ShopDB\\ShopDB.csproj": {}
+    "C:\\Users\\HP\\Desktop\\ShopDB\\ShopDB\\ShopDB.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\Desktop\\P237\\ShopDB\\ShopDB\\ShopDB.csproj": {
+    "C:\\Users\\HP\\Desktop\\ShopDB\\ShopDB\\ShopDB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\P237\\ShopDB\\ShopDB\\ShopDB.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Desktop\\ShopDB\\ShopDB\\ShopDB.csproj",
         "projectName": "ShopDB",
-        "projectPath": "C:\\Users\\HP\\Desktop\\P237\\ShopDB\\ShopDB\\ShopDB.csproj",
+        "projectPath": "C:\\Users\\HP\\Desktop\\ShopDB\\ShopDB\\ShopDB.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\P237\\ShopDB\\ShopDB\\obj\\",
+        "outputPath": "C:\\Users\\HP\\Desktop\\ShopDB\\ShopDB\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
