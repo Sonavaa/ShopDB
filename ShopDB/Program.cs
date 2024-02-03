@@ -52,7 +52,7 @@ void UpdateCategory()
     Categories category = shopDBContext.Categories.Where(s => s.Id == id).FirstOrDefault();
     if (category != null)
     {
-        Console.WriteLine("Add Category Name");
+        Console.WriteLine("Change Category Name");
         category.Name = Console.ReadLine();
         category.UpdatedAt = DateTime.UtcNow.AddHours(4).ToString("dd-MM-yyyy HH:mm");
     }
@@ -91,7 +91,7 @@ void GetAllProducts()
         {
             if (!product.IsDeleted)
             {
-                if(product.CategoryId == category.Id)
+                if (product.CategoryId == category.Id)
                 {
                     string categoryName = category.Name;
                     Console.WriteLine($"Product Category:{categoryName}  Product Name:{product.Name}  Price:{product.Price}");
@@ -122,35 +122,29 @@ void CreateProduct()
     List<Categories> categories = shopDBContext.Categories.ToList();
     Console.WriteLine("Add Product Category");
     product.CategoryId = int.Parse(Console.ReadLine());
+    bool match = false;
+
     foreach (Categories category in categories)
     {
-        bool match = false;
-        do
+        if (product.CategoryId == category.Id)
         {
-            if (product.CategoryId == category.Id)
-            {
-                match = true;
-                Console.WriteLine("Add Product Name");
-                product.Name = Console.ReadLine();
-                Console.WriteLine("Add Product Price");
-                product.Price = int.Parse(Console.ReadLine());
-                product.IsDeleted = false;
-                product.CreatedAt = DateTime.UtcNow.AddHours(4).ToString("dd-MM-yyyy HH:mm");
-                shopDBContext.Products.Add(product);
-                Console.WriteLine($"Category Name:{category.Name}  Product Name:{product.Name}  Product Price:{product.Price}");
-                shopDBContext.SaveChanges();
-            }
-        } while (!match);
-        if (match)
-        {
-            Console.WriteLine("Invalid Category!");
+            match = true;
+            Console.WriteLine("Add Product Name");
+            product.Name = Console.ReadLine();
+            Console.WriteLine("Add Product Price");
+            product.Price = int.Parse(Console.ReadLine());
+            product.IsDeleted = false;
+            product.CreatedAt = DateTime.UtcNow.AddHours(4).ToString("dd-MM-yyyy HH:mm");
+            shopDBContext.Products.Add(product);
+            Console.WriteLine($"Category Name:{category.Name}  Product Name:{product.Name}  Product Price:{product.Price}");
+            shopDBContext.SaveChanges();
         }
     }
 
-
-
-
-
+    if (!match)
+    {
+        Console.WriteLine("Invalid Category");
+    }
 }
 
 void UpdateProduct()
@@ -160,8 +154,12 @@ void UpdateProduct()
     Products product = shopDBContext.Products.Where(p => p.Id == id).FirstOrDefault();
     if (product != null)
     {
-        Console.WriteLine("Add Category Name");
+        Console.WriteLine("Change Product's Category Id");
+        product.CategoryId = int.Parse(Console.ReadLine());
+        Console.WriteLine("Change Product Name");
         product.Name = Console.ReadLine();
+        Console.WriteLine("Change Product Price");
+        product.Price = int.Parse(Console.ReadLine());
         product.UpdatedAt = DateTime.UtcNow.AddHours(4).ToString("dd-MM-yyyy HH:mm");
     }
     else
@@ -222,39 +220,52 @@ void ShowMenu()
     Console.WriteLine("6.Get All Products");
     Console.WriteLine("7.Get Product By Id");
     Console.WriteLine("8.Create Product");
+    Console.WriteLine("9.Update Product");
+    Console.WriteLine("10.Delete Product");
     Console.WriteLine("0.Close");
 }
 
 ShowMenu();
-while (true)
-{
+
     int request = int.Parse(Console.ReadLine());
-    switch (request)
+    while (request != 0)
     {
-        case 1:
-            GetAllCategories();
-            break;
-        case 2:
-            GetCategoryById();
-            break;
-        case 3:
-            CreateCategory();
-            break;
-        case 4:
-            UpdateCategory();
-            break;
-        case 5:
-            DeleteCategory();
-            break;
-        case 6:
-            GetAllProducts();
-            break;
-        case 7:
-            GetProductById();
-            break;
-        case 8:
-            CreateProduct();
-            break;
-    }
+        switch (request)
+        {
+            case 1:
+                GetAllCategories();
+                break;
+            case 2:
+                GetCategoryById();
+                break;
+            case 3:
+                CreateCategory();
+                break;
+            case 4:
+                UpdateCategory();
+                break;
+            case 5:
+                DeleteCategory();
+                break;
+            case 6:
+                GetAllProducts();
+                break;
+            case 7:
+                GetProductById();
+                break;
+            case 8:
+                CreateProduct();
+                break;
+            case 9:
+                UpdateProduct();
+                break;
+            case 10:
+                DeleteProduct();
+                break;
+            default:
+                Console.WriteLine("Please Add Valid Option");
+                break;
+        }
     ShowMenu();
-}
+        request = int.Parse(Console.ReadLine());
+    }
