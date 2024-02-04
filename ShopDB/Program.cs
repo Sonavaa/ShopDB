@@ -1,5 +1,6 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
 using ShopDB.Context;
 using ShopDB.Models;
 
@@ -7,7 +8,9 @@ ShopDBContext shopDBContext = new ShopDBContext();
 
 void GetAllCategories()
 {
-    List<Categories> categories = shopDBContext.Categories.ToList();
+    IQueryable<Categories> queries = shopDBContext.Categories.Where(x => !x.IsDeleted).AsNoTracking();
+
+    List<Categories> categories = queries.Select(c => new Categories { Name = c.Name }).ToList();
     int count = 0;
     foreach (Categories category in categories)
     {
@@ -81,23 +84,37 @@ void DeleteCategory()
 }
 
 
+#region JustForMe
+//void GetAllProducts()
+//{
+//    List<Products> products = shopDBContext.Products.ToList();
+//    List<Categories> categories = shopDBContext.Categories.ToList();
+//    foreach (Categories category in categories)
+//    {
+//        foreach (Products product in products)
+//        {
+//            if (!product.IsDeleted)
+//            {
+//                if (product.CategoryId == category.Id)
+//                {
+//                    string categoryName = category.Name;
+//                    Console.WriteLine($"Product Category:{categoryName}  Product Name:{product.Name}  Price:{product.Price}");
+//                }
+//            }
+//        }
+//    }
+//}
+#endregion
+
 void GetAllProducts()
 {
-    List<Products> products = shopDBContext.Products.ToList();
-    List<Categories> categories = shopDBContext.Categories.ToList();
-    foreach (Categories category in categories)
+    List<Products>? products = shopDBContext.Products.Include(c => c.Category).ToList();
+    foreach (Products product in products)
     {
-        foreach (Products product in products)
-        {
             if (!product.IsDeleted)
             {
-                if (product.CategoryId == category.Id)
-                {
-                    string categoryName = category.Name;
-                    Console.WriteLine($"Product Category:{categoryName}  Product Name:{product.Name}  Price:{product.Price}");
-                }
+                    Console.WriteLine($"Product Category:{product.Category.Name}  Product Name:{product.Name}  Price:{product.Price}");
             }
-        }
     }
 }
 
@@ -186,30 +203,6 @@ void DeleteProduct()
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void ShowMenu()
 {
     Console.WriteLine("1.Get All Categories");
@@ -225,8 +218,7 @@ void ShowMenu()
     Console.WriteLine("0.Close");
 }
 
-ShowMenu();
-
+    ShowMenu();
     int request = int.Parse(Console.ReadLine());
     while (request != 0)
     {
