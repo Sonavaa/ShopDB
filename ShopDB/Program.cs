@@ -3,6 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopDB.Context;
 using ShopDB.Models;
+using System.Collections.Generic;
 
 ShopDBContext shopDBContext = new ShopDBContext();
 
@@ -108,13 +109,21 @@ void DeleteCategory()
 
 void GetAllProducts()
 {
-    List<Products>? products = shopDBContext.Products.Include(c => c.Category).ToList();
+    IQueryable<Products> query = shopDBContext.Products
+        .Where(x => !x.IsDeleted)
+        .Include(x => x.Category).AsNoTracking();
+    IEnumerable<Products> products = query
+        .Select(x => new Products
+        {
+            Category = new Categories {Name = x.Category.Name},
+            Name = x.Name,
+            Price = x.Price
+        })
+        .ToList();
+
     foreach (Products product in products)
     {
-            if (!product.IsDeleted)
-            {
                     Console.WriteLine($"Product Category:{product.Category.Name}  Product Name:{product.Name}  Price:{product.Price}");
-            }
     }
 }
 
